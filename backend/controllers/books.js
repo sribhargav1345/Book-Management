@@ -2,10 +2,9 @@ const express = require("express");
 const router = express.Router();
 
 const Books = require("../models/books");
-const validationBooks = require("../middlewares/validationBooks");
 
 // Posting a new book
-router.post("/api", validationBooks, async(req,res) => {
+router.post("/", async(req,res) => {
 
     try{
         const book_present = await Books.findOne({title: req.body.title, author: req.body.author});
@@ -26,17 +25,16 @@ router.post("/api", validationBooks, async(req,res) => {
         return res.json({ success: true, book: newBook });
     }
     catch(error){
-        console.error("Error Adding books:", err);
+        console.error("Error Adding books:", error);
         return res.status(500).json({ error: "Internal Server Error"});
     }
 });
 
 // Retrieving all books
-router.get("/api/Books", async(req,res) => {
+router.get("/Books", async(req,res) => {
 
     try{
         const books = await Books.find();
-
         return res.json({ success: true, books });
     }
     catch(err){
@@ -46,7 +44,7 @@ router.get("/api/Books", async(req,res) => {
 });
 
 // Updating a book
-router.put("api/Books/:book_id", async(req,res) => {
+router.put("/Books/:book_id", async(req,res) => {
 
     const { book_id } = req.params;
 
@@ -68,7 +66,7 @@ router.put("api/Books/:book_id", async(req,res) => {
 });
 
 // Deleting the book
-router.delete("/api/Books/:book_id", async(req,res) => {
+router.delete("/Books/:book_id", async(req,res) => {
 
     const {book_id} = req.params;
 
