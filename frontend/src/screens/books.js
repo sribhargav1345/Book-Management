@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from "../components/Navbar";
+import Heading from "../components/Heading";
+
 import "./books.css";
 
 export default function Books() {
@@ -47,8 +49,9 @@ export default function Books() {
     return (
         <div>
             <Navbar />
+            <Heading />
             <div>
-                <div className='container mt-5'>
+                <div className='container tabling mt-5'>
                     <table className='tables'>
                         <thead>
                             <tr>

@@ -1,0 +1,28 @@
+.container-search{
+    width: 100%;
+    background-color:#2d3d6a;
+    height: 22vh;
+}
+
+.imaging1 {
+    height: 70px;
+    width: 70px;
+    margin: 50px auto;
+}
+
+.head-search{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.heading{
+    margin: 2rem;
+    color: white;
+}
+
+.table-search {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+}
