@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from "../components/Navbar";
 import Heading from "../components/Heading";
+import Search from "../components/Search";
+import bin from "../images/bin.png";
+import edit from "../images/edit.png";
 
 import "./books.css";
 
-export default function Books() {
+export default function Books(props) {
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -23,10 +26,7 @@ export default function Books() {
 
                 const response = await data.json();
                 setBooks(response.books);
-
-                console.log(response.books);
                 setLoading(false);
-
             } catch (error) {
                 console.log("Error fetching Data", error);
                 setLoading(false);
@@ -35,6 +35,43 @@ export default function Books() {
 
         loadBooks();
     }, []);
+
+    const handleRemove = async (bookId) => {
+
+        try {
+            const response = await fetch(`http://localhost:7000/api/books/${bookId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                setBooks(books.filter(book => book._id !== bookId));
+            } else {
+                console.error("Failed to delete book:", result.error);
+            }
+        } catch (error) {
+            console.error("Error deleting book:", error);
+        }
+    };
+
+    const handleEdit = async(bookId) => {
+        
+        // try{
+        //     const response = await fetch(`http://localhost:7000/api/books/${bookId}`, {
+        //         method: "PUT",
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify({})
+        //     });
+        // }
+        // catch(error){
+        //     console.error("Error fetching Data", error);
+        // }
+    };
 
     const indexOfLastBook = currentPage * booksPerPage;
     const indexOfFirstBook = indexOfLastBook - booksPerPage;
@@ -50,6 +87,7 @@ export default function Books() {
         <div>
             <Navbar />
             <Heading />
+            <Search />
             <div>
                 <div className='container tabling mt-5'>
                     <table className='tables'>
@@ -60,16 +98,28 @@ export default function Books() {
                                 <th> Author </th>
                                 <th> Genre </th>
                                 <th> Year Published </th>
+                                {!localStorage.getItem('authToken') && (
+                                    <>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </>
+                                )}
                             </tr>
                         </thead>
                         <tbody>
                             {currentBooks.map((item, index) => (
-                                <tr key={index}>
+                                <tr key={item._id || index}>
                                     <td>{indexOfFirstBook + index + 1}</td>
                                     <td>{item.title}</td>
                                     <td>{item.author}</td>
                                     <td>{item.genre}</td>
                                     <td>{item.year}</td>
+                                    {!localStorage.getItem('authToken') && (
+                                        <>
+                                            <td><button onClick={() => handleEdit(item._id)}><img src={edit} alt="Edit" height='20px' width='20px' /></button></td>
+                                            <td><button onClick={() => handleRemove(item._id)}><img src={bin} alt="Delete" height='20px' width='20px' /></button></td>
+                                        </>
+                                    )}
                                 </tr>
                             ))}
                         </tbody>
