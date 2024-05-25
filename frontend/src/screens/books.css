@@ -1,3 +1,8 @@
+.tables-container {
+    overflow-x: auto;
+    width: 100%;
+}
+
 .tables {
     border-collapse: collapse;
     width: 100%;
@@ -6,6 +11,7 @@
 .tables th, .tables td {
     border: 1px solid #ddd;
     padding: 8px;
+    white-space: nowrap; /* Prevent text wrapping */
 }
 
 .tables th {
@@ -19,7 +25,8 @@
 .pagination {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 40px;
+    margin-bottom: 50px;
 }
 
 .page-link {
@@ -32,4 +39,43 @@
 
 .page-link:hover {
     background-color: #f0f0f0;
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+    .tables th, .tables td {
+        font-size: 12px; /* Decrease font size */
+        padding: 6px; /* Adjust padding */
+    }
+
+    .pagination {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .page-link {
+        margin: 5px 0;
+        padding: 8px 12px; /* Adjust padding */
+    }
+
+    .tables-container {
+        padding: 0 10px; /* Add padding to avoid horizontal scrolling */
+    }
+}
+
+/* Media query for extra small screens */
+@media screen and (max-width: 480px) {
+    .tables th, .tables td {
+        font-size: 10px; /* Further decrease font size */
+        padding: 4px; /* Further adjust padding */
+    }
+
+    .page-link {
+        margin: 3px 0;
+        padding: 6px 10px; /* Further adjust padding */
+    }
+
+    .tables-container {
+        padding: 0 5px; /* Further adjust padding */
+    }
 }

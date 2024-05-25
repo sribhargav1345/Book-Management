@@ -7,9 +7,13 @@ import edit from "../images/edit.png";
 
 import "./books.css";
 
-export default function Books(props) {
+export default function Books() {
+
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const [editingBookId, setEditingBookId] = useState(null);
+    const [editedBook, setEditedBook] = useState({ title: "", author: "", genre: "", year: "" });
 
     const [currentPage, setCurrentPage] = useState(1);
     const booksPerPage = 10;
@@ -27,6 +31,7 @@ export default function Books(props) {
                 const response = await data.json();
                 setBooks(response.books);
                 setLoading(false);
+
             } catch (error) {
                 console.log("Error fetching Data", error);
                 setLoading(false);
@@ -37,7 +42,6 @@ export default function Books(props) {
     }, []);
 
     const handleRemove = async (bookId) => {
-
         try {
             const response = await fetch(`http://localhost:7000/api/books/${bookId}`, {
                 method: 'DELETE',
@@ -49,28 +53,54 @@ export default function Books(props) {
             const result = await response.json();
             if (result.success) {
                 setBooks(books.filter(book => book._id !== bookId));
-            } else {
+            } 
+            else {
                 console.error("Failed to delete book:", result.error);
             }
-        } catch (error) {
+        } 
+        catch (error) {
             console.error("Error deleting book:", error);
         }
     };
 
-    const handleEdit = async(bookId) => {
-        
-        // try{
-        //     const response = await fetch(`http://localhost:7000/api/books/${bookId}`, {
-        //         method: "PUT",
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         },
-        //         body: JSON.stringify({})
-        //     });
-        // }
-        // catch(error){
-        //     console.error("Error fetching Data", error);
-        // }
+    const handleEditClick = (book) => {
+        setEditingBookId(book._id);
+        setEditedBook({ title: book.title, author: book.author, genre: book.genre, year: book.year });
+    };
+
+    const handleSaveClick = async (bookId) => {
+        try {
+
+            const response = await fetch(`http://localhost:7000/api/books/${bookId}`, {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(editedBook)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                setBooks(books.map(book => book._id === bookId ? result.book : book));
+                setEditingBookId(null);
+            } 
+            else {
+                console.error("Failed to update book:", result.error);
+            }
+        } 
+        catch (error) {
+            console.error("Error updating book:", error);
+        }
+    };
+
+    const handleCancelClick = () => {
+        setEditingBookId(null);
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setEditedBook({ ...editedBook, [name]: value });
     };
 
     const indexOfLastBook = currentPage * booksPerPage;
@@ -110,14 +140,28 @@ export default function Books(props) {
                             {currentBooks.map((item, index) => (
                                 <tr key={item._id || index}>
                                     <td>{indexOfFirstBook + index + 1}</td>
-                                    <td>{item.title}</td>
-                                    <td>{item.author}</td>
-                                    <td>{item.genre}</td>
-                                    <td>{item.year}</td>
-                                    {!localStorage.getItem('authToken') && (
+                                    {editingBookId === item._id ? (
                                         <>
-                                            <td><button onClick={() => handleEdit(item._id)}><img src={edit} alt="Edit" height='20px' width='20px' /></button></td>
-                                            <td><button onClick={() => handleRemove(item._id)}><img src={bin} alt="Delete" height='20px' width='20px' /></button></td>
+                                            <td><input type="text" name="title" value={editedBook.title} onChange={handleChange} /></td>
+                                            <td><input type="text" name="author" value={editedBook.author} onChange={handleChange} /></td>
+                                            <td><input type="text" name="genre" value={editedBook.genre} onChange={handleChange} /></td>
+                                            <td><input type="text" name="year" value={editedBook.year} onChange={handleChange} /></td>
+
+                                            <td><button onClick={() => handleSaveClick(item._id)}>Save</button></td>
+                                            <td><button onClick={handleCancelClick}>Cancel</button></td>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <td>{item.title}</td>
+                                            <td>{item.author}</td>
+                                            <td>{item.genre}</td>
+                                            <td>{item.year}</td>
+                                            {!localStorage.getItem('authToken') && (
+                                                <>
+                                                    <td><button onClick={() => handleEditClick(item)}><img src={edit} alt="Edit" height='20px' width='20px' /></button></td>
+                                                    <td><button onClick={() => handleRemove(item._id)}><img src={bin} alt="Delete" height='20px' width='20px' /></button></td>
+                                                </>
+                                            )}
                                         </>
                                     )}
                                 </tr>

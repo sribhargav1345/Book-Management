@@ -1,8 +1,15 @@
 .navbar-items{
-    width: 100vw;
-    height: 200px;
-    margin: 50px;
     background-color: rgb(246, 249, 252);
     border: 1px solid #ccc;
-    box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.5);
+}
+
+.logout-button {
+    margin-left: 15px; 
+}
+
+@media (max-width: 768px) {
+    .logout-button {
+        margin: 10px 0; /* Adjust the margin for smaller screens */
+        width: 100%; /* Make the button full-width on smaller screens */
+    }
 }

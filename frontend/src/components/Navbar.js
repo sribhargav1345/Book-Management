@@ -4,6 +4,7 @@ import { Navbar, Nav } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import bookicon from "../images/books-icon.png";
+import "./Navbar.css"
 
 export default function CustomNavbar() {
     return (
@@ -27,7 +28,7 @@ export default function CustomNavbar() {
 
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="ms-auto">
-                    <button><Link to="/logout"> Logout </Link></button>
+                    <button className='btn logout-button'><Link to="/login"> Logout </Link></button>
                 </Nav>
             </Navbar.Collapse>
 

@@ -1,8 +1,10 @@
+/* Search.css */
 .search-space {
     background-color: #f6f9fc;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px;
 }
 
 .items {
@@ -17,14 +19,23 @@
     margin: 10px;
 }
 
-.search-name{
+.search-name {
     margin-left: 80px;
 }
 
-.filter-search, .apply-button{
-    flex: 1; 
+.filter-search, .apply-button {
+    flex: 1;
     margin-top: 30px;
     margin-bottom: 0;
+}
+
+.buttoning {
+    margin-right: 30px;
+}
+
+.addchey {
+    width: 5vw !important;
+    position: relative;
 }
 
 .search-name p, .search-filter p {
@@ -67,4 +78,90 @@
     height: 50px;
     margin-left: 25px; 
     margin-top: 28px;
+}
+
+@media (max-width: 768px) {
+    .search-name, .search-filter, .filter-search, .apply-button {
+        flex: 1 1 100%;
+        margin: 10px 0;
+    }
+
+    .search-name {
+        margin-left: 0;
+    }
+
+    .addchey {
+        width: 100% !important;
+    }
+}
+
+.addchey:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%; /* Position above the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #000;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.addchey:hover::before {
+    content: '';
+    position: absolute;
+    bottom: 100%; /* Position at the bottom of the tooltip */
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #000 transparent;
+}
+
+/* Popup Styles */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.popup-inner {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 500px;
+}
+
+.popup-inner h2 {
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.popup-inner form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.popup-inner form label input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    margin-top: 5px;
+}
+
+.popup-inner form button {
+    margin-right: 10px;
 }
