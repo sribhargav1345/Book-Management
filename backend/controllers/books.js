@@ -110,25 +110,45 @@ router.delete("/Books/:book_id", async(req,res) => {
 });
 
 // Issuing Books related
-router.get("/books/:book_id", async(req,res) => {
+router.post("/books/:book_id", async(req,res) => {
 
     const { book_id } = req.params;
-
-    const { email } = req.body;
+    const { email, action } = req.body;
 
     try{ 
-        const book = Books.findOne({ book_id });
+        const book = await Books.findOne({ book_id });
         if (!book) {
             return res.status(404).json({ message: 'Book not found' });
         }
 
-        const user = Users.findOne({ email });
+        const user = await Users.findOne({ email });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        user.books.push(book._id);
-        await user.save();
+        if (action === "Issue") {
+            if (!user.issues.includes(book_id)){
+                user.issues.push(book_id);
+                await user.save();
+                return res.status(200).json({ message: 'Book issued successfully' });
+            } 
+            else {
+                return res.status(400).json({ message: 'Book already issued to the user' });
+            }
+        } 
+        else if (action === "Return") {
+            if (user.issues.includes(book_id)) {
+                user.issues = user.issues.filter(id => id != book_id);
+                await user.save();
+                return res.status(200).json({ message: 'Book returned successfully' });
+            } 
+            else {
+                return res.status(400).json({ message: 'Book not issued to the user' });
+            }
+        } 
+        else {
+            return res.status(400).json({ message: 'Invalid action' });
+        }
     }
     catch(error){
         console.error(error);
