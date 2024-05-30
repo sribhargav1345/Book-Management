@@ -38,7 +38,7 @@ export default function Books() {
                 query += `${query ? '&' : '?'}${filterOption}=${filterValue}`;
             }
 
-            const response = await fetch(`https://book-management-cjgu.onrender.com/api/books${query}`, {
+            const response = await fetch(`http://localhost:7000/api/books${query}`, {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json'
@@ -69,7 +69,7 @@ export default function Books() {
 
     const handleRemove = async (bookId) => {
         try {
-            const response = await fetch(`https://book-management-cjgu.onrender.com/api/books/${bookId}`, {
+            const response = await fetch(`http://localhost:7000/api/books/${bookId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -92,7 +92,7 @@ export default function Books() {
     const handleSaveClick = async (bookId) => {
 
         try {
-            const response = await fetch(`https://book-management-cjgu.onrender.com/api/books/${bookId}`, {
+            const response = await fetch(`http://localhost:7000/api/books/${bookId}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -166,7 +166,7 @@ export default function Books() {
                                 <th>Author</th>
                                 <th>Genre</th>
                                 <th>Year Published</th>
-                                {Cookies.get('type') !== 'Admin' && (
+                                {Cookies.get('type') === 'Admin' && (
                                     <>
                                         <th>Edit</th>
                                         <th>Delete</th>
@@ -178,7 +178,7 @@ export default function Books() {
                             {currentBooks.map((item, index) => (
                                 <tr key={item._id || index}>
                                     <td>{first + index + 1}</td>
-                                    {Cookies.get('type') !== 'Admin' && (
+                                    {Cookies.get('type') === 'Admin' && (
                                         <>
                                             {editingBookId === item._id ? (
                                                 <>
@@ -201,7 +201,7 @@ export default function Books() {
                                             )}
                                         </>
                                     )}
-                                    {Cookies.get('type') === 'Admin' && (
+                                    {Cookies.get('type') !== 'Admin' && (
                                         <>
                                             <td>{item.title}</td>
                                             <td>{item.author}</td>

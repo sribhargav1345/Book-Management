@@ -38,7 +38,7 @@ export default function BookIssue() {
                 <div className="issue-card">
                     <div className='content'>
                         <div className='name-title'>
-                            <h2 className="books-title mb-4">Book Issual</h2>
+                            <h2 className="books-title mb-4">Book Return</h2>
                         </div>
 
                         <form onSubmit={handleSubmit}>

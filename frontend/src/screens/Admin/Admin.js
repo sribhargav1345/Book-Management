@@ -5,6 +5,8 @@ import Navbar from '../../components/Navbar/Navbar';
 import Heading from '../../components/Heading/Heading';
 
 import AddBooks from '../../components/Admin/AddBooks';
+import BookIssue from '../../components/Admin/BookIssue';
+import BookReturn from '../../components/Admin/BookReturn';
 
 export default function Admin() {
 
@@ -19,7 +21,10 @@ export default function Admin() {
                 <h2> <AddBooks /> </h2>
             </div>
             <div>
-                <h2> Books Issual </h2>
+                <h2> <BookIssue /> </h2>
+            </div>
+            <div>
+                <h2> <BookReturn /> </h2>
             </div>
         </div>
     </div>

@@ -32,8 +32,8 @@
 .one-book, .multi-book{
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Ensure even spacing between text and button */
-    margin: 10px 0; /* Add some space above and below each section */
+    justify-content: space-between;
+    margin: 10px 0;
     font-size: 1.2rem;
 }
 
@@ -43,6 +43,7 @@
 
 .buttoning{
     width: auto;
+    margin: auto;
 }
 
 .cate {

@@ -16,6 +16,9 @@ const UserSchema = new Schema({
     },
     googleId:{
         type: String
+    },
+    issues:{
+        type: Array
     }
 });
 

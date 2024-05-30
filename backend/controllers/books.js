@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const Books = require("../models/books");
+const Users = require("../models/Users");
 
 // Posting a new book
 router.post("/", async(req,res) => {
@@ -107,5 +108,33 @@ router.delete("/Books/:book_id", async(req,res) => {
         return res.status(500).json({ err: "Internal Server error, not deleted"});
     }
 });
+
+// Issuing Books related
+router.get("/books/:book_id", async(req,res) => {
+
+    const { book_id } = req.params;
+
+    const { email } = req.body;
+
+    try{ 
+        const book = Books.findOne({ book_id });
+        if (!book) {
+            return res.status(404).json({ message: 'Book not found' });
+        }
+
+        const user = Users.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        user.books.push(book._id);
+        await user.save();
+    }
+    catch(error){
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+
+})
 
 module.exports = router;
