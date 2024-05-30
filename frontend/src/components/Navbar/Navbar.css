@@ -4,12 +4,16 @@
 }
 
 .logout-button {
-    margin-left: 15px; 
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: white;
+    background-color: #2d3d6a;
+    margin-right: 30px;
 }
 
 @media (max-width: 768px) {
     .logout-button {
-        margin: 10px 0; /* Adjust the margin for smaller screens */
+        margin: 10px 0 10px 0; /* Adjust the margin for smaller screens */
         width: 100%; /* Make the button full-width on smaller screens */
     }
 }

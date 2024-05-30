@@ -4,28 +4,35 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-const axios = require('axios');
 const User = require('../models/Users');
 
 const authenticate = require("../middlewares/authRoutes");
 
 const generateToken = (user) => {
-    return jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    return jwt.sign({ id: user._id, name: user.name, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
 };
 
 
-router.post('/signup', authenticate, async (req, res) => {
+router.post('/register', async (req, res) => {
 
     const { name, email, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     try {
+        const email_dup = await User.findOne({email});
+
+        if(email_dup){
+            console.log("Not-email");
+            return res.status(400).json({message: "Email aldready Registered"});
+        }
+
         const user = await User.create({ name, email, password: hashedPassword });
         const token = generateToken(user);
 
-        res.json({ token });
+        res.status(200).json({ message: "User created Successfully", authToken: token });
     } 
     catch (error) {
+        console.log("500 error")
         res.status(500).json({ error: error.message });
     }
 });
@@ -38,17 +45,19 @@ router.post('/login', async (req, res) => {
     try {
 
         const user = await User.findOne({ email });
+
         if (!user) {
             return res.status(401).json({ message: 'Signup First' });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
+
         if (!isMatch) {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
-
         const token = generateToken(user);
-        res.json({ token });
+        
+        res.status(200).json({ message: "Login Successfull", token });
     } 
     catch (error) {
         res.status(500).json({ error: error.message });

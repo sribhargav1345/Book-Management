@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
+
 import "./login.css";
 
-import book_bg from "../images/book-lib.jpg";
-import LoginForm from "../components/Card";
+import book_bg from "../../images/book-lib.jpg";
+import LoginForm from "../../components/Login/Login";
 
 export default function Login() {
 

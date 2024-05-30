@@ -30,8 +30,8 @@ router.post("/", async(req,res) => {
     }
 });
 
-// Retrieving all books
-router.get("/Books", async(req,res) => {
+//Retrieving all books
+router.get("/Books-all", async(req,res) => {
 
     try{
         const books = await Books.find();
@@ -40,6 +40,27 @@ router.get("/Books", async(req,res) => {
     catch(err){
         console.error("Error retrieving books:", err);
         return res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+// Retrieving books based on query parameters
+router.get('/books', async (req, res) => {
+
+    try {
+        const { title, author, genre, year } = req.query;
+        let filter = {};
+
+        if (title) filter.title = { $regex: title, $options: 'i' };
+        if (author) filter.author = { $regex: author, $options: 'i' };
+        if (genre) filter.genre = { $regex: genre, $options: 'i' };
+        if (year) filter.year = Number(year);
+
+        const books = await Books.find(filter);
+        res.json({ books });
+    } 
+    catch (error) {
+        console.error('Error fetching books:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 

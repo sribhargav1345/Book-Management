@@ -1,0 +1,53 @@
+.add-books{
+    min-width: 50%;
+}
+
+.books-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: auto;
+    height: 100%;
+}
+
+.books-card {
+    background-color: #fff;
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 30vw;
+    text-align: center;
+    height: max-content;
+}
+
+.books-title{
+    font-weight: 600;
+}
+
+.title{
+    margin-bottom: 25px;
+}
+
+.one-book, .multi-book{
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Ensure even spacing between text and button */
+    margin: 10px 0; /* Add some space above and below each section */
+    font-size: 1.2rem;
+}
+
+.content{
+    margin: 0;
+}
+
+.buttoning{
+    width: auto;
+}
+
+.cate {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Center items horizontally */
+}
