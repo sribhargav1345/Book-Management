@@ -13,7 +13,6 @@ const LoginForm = () => {
     
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [user,setUser] = useState(null);
 
     const navigate = useNavigate();
 
@@ -28,7 +27,7 @@ const LoginForm = () => {
     const handleSubmit = async(e) => {
         e.preventDefault();
 
-        const response = await fetch("http://localhost:7000/api/login", {
+        const response = await fetch("https://book-management-cjgu.onrender.com/api/login", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -49,12 +48,13 @@ const LoginForm = () => {
 
         const token = result.token;
 
+        console.log(token);
+
         if (token) {
             try {
                 const decodedToken = jwtDecode(token);
-                setUser(decodedToken);
 
-                if(user.email === 'bollapragadasri@iitbhilai.ac.in' ){
+                if(decodedToken.email === 'bollapragadasri@iitbhilai.ac.in' ){
                     Cookies.set('type', 'Admin', { expires: 1, sameSite: 'Lax' });
                 }
                 else {
@@ -62,8 +62,6 @@ const LoginForm = () => {
                 }
             }
             catch (error) {
-                // Cookies.remove('authToken');
-                // navigate('/login');
                 console.log(error);
             }
         } 

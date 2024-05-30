@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import './Search.css';
 
-import Cookies from 'js-cookie';
-
 export default function Search({ TitleValue, setTitleValue, filterOption, setFilterOption, filterValue, setFilterValue, handleSearch }) {
 
     const [showPopup, setShowPopup] = useState(false);
@@ -23,7 +21,7 @@ export default function Search({ TitleValue, setTitleValue, filterOption, setFil
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const url = `http://localhost:7000/api/books`;
+        const url = `https://book-management-cjgu.onrender.com/api/books`;
 
         const response = await fetch(url, {
             method: "POST",
@@ -92,10 +90,7 @@ export default function Search({ TitleValue, setTitleValue, filterOption, setFil
                 </div>
 
                 <div className='col-md-3 apply-button d-flex flex-row'>
-                    <button className='btn btn-primary btn-md buttoning' onClick={handleSearch}>Apply</button>
-                    {Cookies.get('type')=== "Admin" ? (
-                        <button className='btn btn-primary btn-sm addchey' onClick={togglePopup} data-tooltip="Add Book">+</button>
-                    ) : null}
+                    <button className='btn btn-primary btn-md buttoning px-5' onClick={handleSearch}>Apply</button>
                 </div>
 
             </div>

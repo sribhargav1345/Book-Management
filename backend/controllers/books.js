@@ -109,7 +109,7 @@ router.delete("/Books/:book_id", async(req,res) => {
     }
 });
 
-// Issuing Books related
+// Issuing,Returning Books related
 router.post("/books/:book_id", async(req,res) => {
 
     const { book_id } = req.params;

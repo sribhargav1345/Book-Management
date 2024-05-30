@@ -6,17 +6,19 @@ export default function BookIssue() {
     const [email, setEmail] = useState('');
     const [bookId, setBookId] = useState('');
 
+    const action = "Return";
+
     const handleSubmit = async(e) => {
         e.preventDefault();
 
-        const url = `http://localhost:7000/api/books/${bookId}`;
+        const url = `https://book-management-cjgu.onrender.com/api/books/${bookId}`;
 
         let response = await fetch(url, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email })
+            body: JSON.stringify({ email, action})
         });
 
         let result = response.json();
