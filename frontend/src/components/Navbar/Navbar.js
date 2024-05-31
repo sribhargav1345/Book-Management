@@ -36,9 +36,9 @@ export default function CustomNavbar(User) {
                         alt="Logo"
                         width="30"
                         height="30"
-                        className="d-inline-block align-top me-2"
+                        className="d-inline-block align-top me-2 icon-class"
                     />
-                    <span className="font-weight-bold" style={{ fontFamily: 'Arial, sans-serif', fontSize: '1.5rem' }}>
+                    <span className="font-weight-bold bookhive">
                         BookHive
                     </span>
                 </div>

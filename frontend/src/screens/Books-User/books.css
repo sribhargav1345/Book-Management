@@ -1,6 +1,12 @@
 .tables-container {
     overflow-x: auto;
     width: 100%;
+    padding: 0 10px; 
+}
+
+.table-prop{
+    width: 100%;
+    overflow-x: auto; 
 }
 
 .tables {
@@ -18,7 +24,9 @@
 .tables th, .tables td {
     border: 1px solid #ddd;
     padding: 8px;
-    white-space: nowrap; /* Prevent text wrapping */
+    white-space: nowrap; 
+    text-overflow: ellipsis; 
+    overflow: hidden;
 }
 
 .tables th {
@@ -49,11 +57,11 @@
     background-color: #f0f0f0;
 }
 
-/* Media query for smaller screens */
+
 @media screen and (max-width: 768px) {
     .tables th, .tables td {
-        font-size: 12px; /* Decrease font size */
-        padding: 6px; /* Adjust padding */
+        font-size: 11px; 
+        padding: 6px; 
     }
 
     .pagination {
@@ -63,27 +71,32 @@
 
     .page-link {
         margin: 5px 0;
-        padding: 8px 12px; /* Adjust padding */
+        padding: 8px 12px; 
     }
 
     .tables-container {
-        padding: 0 10px; /* Add padding to avoid horizontal scrolling */
+        padding: 0 5px;
     }
 }
 
-/* Media query for extra small screens */
+
 @media screen and (max-width: 480px) {
+
+    .tables{
+        table-layout: relative;
+    }
+
     .tables th, .tables td {
-        font-size: 10px; /* Further decrease font size */
-        padding: 4px; /* Further adjust padding */
+        font-size: 9px; 
+        padding: 4px; 
     }
 
     .page-link {
         margin: 3px 0;
-        padding: 6px 10px; /* Further adjust padding */
+        padding: 6px 10px; 
     }
 
     .tables-container {
-        padding: 0 5px; /* Further adjust padding */
+        padding: 0 2px;
     }
 }

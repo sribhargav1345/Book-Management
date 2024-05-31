@@ -164,7 +164,7 @@ export default function Books() {
                 setFilterValue={setFilterValue}
                 handleSearch={handleSearch}
             />
-            <div className='container mt-5'>
+            <div className='table-prop container mt-5'>
                 <div className='tabling'>
                     <table className='tables'>
                         <thead>
