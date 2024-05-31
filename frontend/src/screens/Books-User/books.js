@@ -9,6 +9,7 @@ import bin from "../../images/bin.png";
 import edit from "../../images/edit.png";
 
 import "./books.css";
+import { useNavigate } from 'react-router-dom';
 
 export default function Books() {
 
@@ -20,10 +21,12 @@ export default function Books() {
     const [filterValue, setFilterValue] = useState('');                             // Filter by option value
 
     const [editingBookId, setEditingBookId] = useState(null);
-    const [editedBook, setEditedBook] = useState({ title: "", author: "", genre: "", year: "" });
+    const [editedBook, setEditedBook] = useState({ title: "", author: "", genre: "", year: "", count: 1 });
 
     const [curr, setCurr] = useState(1);                                            // Pagination state
     const limit = 10;
+
+    const navigate = useNavigate();
 
     const loadBooks = useCallback(async () => {
 
@@ -38,7 +41,7 @@ export default function Books() {
                 query += `${query ? '&' : '?'}${filterOption}=${filterValue}`;
             }
 
-            const response = await fetch(`https://book-management-cjgu.onrender.com/api/books${query}`, {
+            const response = await fetch(`http://localhost:7000/api/books${query}`, {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json'
@@ -60,7 +63,7 @@ export default function Books() {
 
     useEffect(() => {
         loadBooks();
-    }, [loadBooks, setBooks]);
+    }, [loadBooks, setBooks, editedBook.count]);
 
     const handleSearch = () => {
         setCurr(1);
@@ -69,7 +72,7 @@ export default function Books() {
 
     const handleRemove = async (bookId) => {
         try {
-            const response = await fetch(`https://book-management-cjgu.onrender.com/api/books/${bookId}`, {
+            const response = await fetch(`http://localhost:7000/api/books/${bookId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -92,7 +95,7 @@ export default function Books() {
     const handleSaveClick = async (bookId) => {
 
         try {
-            const response = await fetch(`https://book-management-cjgu.onrender.com/api/books/${bookId}`, {
+            const response = await fetch(`http://localhost:7000/api/books/${bookId}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -117,7 +120,7 @@ export default function Books() {
 
     const handleEdit = (book) => {
         setEditingBookId(book._id);
-        setEditedBook({ title: book.title, author: book.author, genre: book.genre, year: book.year });
+        setEditedBook({ title: book.title, author: book.author, genre: book.genre, year: book.year, count: book.count });
     };
 
     const handleCancelClick = () => {
@@ -141,6 +144,11 @@ export default function Books() {
                 <h2> Loading... </h2>
             </div>
         );
+    }
+
+    if(!Cookies.get('authToken')){
+        navigate('/login');
+        return;
     }
 
     return (
@@ -168,6 +176,7 @@ export default function Books() {
                                 <th>Year Published</th>
                                 {Cookies.get('type') === 'Admin' && (
                                     <>
+                                        <th>Count</th>
                                         <th>Edit</th>
                                         <th>Delete</th>
                                     </>
@@ -186,6 +195,7 @@ export default function Books() {
                                                     <td><input type="text" name="author" value={editedBook.author} onChange={handleChange} /></td>
                                                     <td><input type="text" name="genre" value={editedBook.genre} onChange={handleChange} /></td>
                                                     <td><input type="text" name="year" value={editedBook.year} onChange={handleChange} /></td>
+                                                    <td><input type="text" name="count" value={editedBook.count} onChange={handleChange} /></td>
                                                     <td><button onClick={() => handleSaveClick(item._id)}>Save</button></td>
                                                     <td><button onClick={handleCancelClick}>Cancel</button></td>
                                                 </>
@@ -195,6 +205,7 @@ export default function Books() {
                                                     <td>{item.author}</td>
                                                     <td>{item.genre}</td>
                                                     <td>{item.year}</td>
+                                                    <td>{item.count}</td>
                                                     <td><button className='btn btn-sm' onClick={() => handleEdit(item)}><img src={edit} alt='edit' height='20px' /></button></td>
                                                     <td><button className='btn btn-sm' onClick={() => handleRemove(item._id)}><img src={bin} alt='delete' height='20px' /></button></td>
                                                 </>

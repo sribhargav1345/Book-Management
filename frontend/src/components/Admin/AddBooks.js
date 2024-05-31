@@ -9,7 +9,8 @@ export default function AddBooks() {
     const [author, setAuthor] = useState('');
     const [genre, setGenre] = useState('');
     const [year, setYear] = useState(null);
-    const [count, setCount] = useState(0);
+    const [count, setCount] = useState(1);
+    const [bookId, setBookId] = useState(null);
 
     const togglePopup = () => {
         setShowPopup(!showPopup);
@@ -18,14 +19,14 @@ export default function AddBooks() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const url = `https://book-management-cjgu.onrender.com/api/books`;
+        const url = `http://localhost:7000/api/`;
 
         const response = await fetch(url, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ title, author, genre, year })
+            body: JSON.stringify({ title, author, genre, year, count, bookId })
         });
 
         const result = await response.json();
@@ -34,6 +35,8 @@ export default function AddBooks() {
         setAuthor("");
         setGenre("");
         setYear(null);
+        setBookId(null);
+        setCount(0);
 
         if (!response.ok) {
             console.log(result.message || "Warning! Book Not Added");
@@ -94,7 +97,7 @@ export default function AddBooks() {
                             <div className='d-flex'>
                                 <label className='me-3'>
                                     BookId:
-                                    <input type='number' name='year' className='form-control' required value={year} onChange={(e) => setYear(e.target.value)} />
+                                    <input type='number' name='year' className='form-control' required value={bookId} onChange={(e) => setBookId(e.target.value)} />
                                 </label>
                                 <label>
                                     Year:

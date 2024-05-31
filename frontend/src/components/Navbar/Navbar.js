@@ -8,18 +8,25 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import bookicon from "../../images/books-icon.png";
 import "./Navbar.css"
 
-export default function CustomNavbar() {
+export default function CustomNavbar(User) {
 
     const navigate = useNavigate();
+    //console.log(User.User);
 
-    const handleLogout = async() => {
+    const handleLogout = async () => {
 
         Cookies.remove('authToken');
         Cookies.remove('type');
 
         navigate("/login");
     }
-    
+
+    const handleAdmin = async () => {
+
+        if(User.User !== "AdminDashboard") navigate("/admin");
+        else navigate("/");
+    }
+
     return (
         <Navbar variant="dark" expand="lg" className="p-2 navbar-items">
             <Navbar.Brand href="#" className="d-flex align-items-center text-black">
@@ -37,9 +44,32 @@ export default function CustomNavbar() {
                 </div>
             </Navbar.Brand>
 
-            <Nav className="ms-auto">
-                <button className='btn logout-button' onClick={handleLogout}> Logout</button>
-            </Nav>
+            {Cookies.get('type') === "Admin" &&
+                <div className="d-flex ms-auto">
+
+                    {User.User !== "AdminDashboard" && (
+                        <Nav>
+                            <button className='btn logout-button' onClick={handleAdmin}> Admin</button>
+                        </Nav>
+                    )}
+                    {User.User === "AdminDashboard" && (
+                        <Nav>
+                            <button className='btn logout-button' onClick={handleAdmin}> Books</button>
+                        </Nav>
+                    )}
+
+                    <Nav>
+                        <button className='btn logout-button' onClick={handleLogout}> Logout</button>
+                    </Nav>
+                </div>
+            }
+
+            {Cookies.get('type') !== "Admin" &&
+                <Nav className='ms-auto'>
+                    <button className='btn logout-button' onClick={handleLogout}> Logout</button>
+                </Nav>
+            }
+
 
         </Navbar>
     );

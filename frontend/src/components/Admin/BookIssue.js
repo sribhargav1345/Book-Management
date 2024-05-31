@@ -11,7 +11,7 @@ export default function BookIssue() {
     const handleSubmit = async(e) => {
         e.preventDefault();
 
-        const url = `https://book-management-cjgu.onrender.com/api/books/${bookId}`;
+        const url = `http://localhost:7000/api/books/${bookId}`;
 
         let response = await fetch(url, {
             method: "POST",
@@ -21,13 +21,13 @@ export default function BookIssue() {
             body: JSON.stringify({ email, action })
         });
 
-        let result = response.json();
+        let result = await response.json();
 
         if(!response.ok){
             alert(result.message || "Issue Failed");
         }
         else{
-            alert("Issuing Successfull");
+            alert(result.message || "Issuing Successfull");
         }
 
         setEmail('');

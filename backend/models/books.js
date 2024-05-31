@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const BookSchema = new Schema({
-    Book_Id:{
-        type: String,
+    bookId:{
+        type: Number,
         required: true,
         unique: true
     },
@@ -25,7 +25,8 @@ const BookSchema = new Schema({
     },
     count: {
         type: Number,
-        required: true
+        required: true,
+        default: 1
     }
 });
 

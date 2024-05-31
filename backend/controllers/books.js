@@ -8,17 +8,25 @@ const Users = require("../models/Users");
 router.post("/", async(req,res) => {
 
     try{
-        const book_present = await Books.findOne({title: req.body.title, author: req.body.author});
+        const book_present = await Books.findOne({ title: req.body.title, author: req.body.author });
 
         if(book_present){
             return res.status(400).json({ error: "Book Aldready present "});
         }
 
+        const book_id = await Books.findOne({ bookId: req.body.bookId });
+
+        if(book_id){
+            return res.status(400).json({ error: "ID Aldready registered"});
+        }
+
         const newBook =  new Books({
+            bookId: req.body.bookId,
             title: req.body.title,
             author: req.body.author,
             genre: req.body.genre,
-            year: req.body.year
+            year: req.body.year,
+            count: req.body.count
         });
 
         await newBook.save();
@@ -28,19 +36,6 @@ router.post("/", async(req,res) => {
     catch(error){
         console.error("Error Adding books:", error);
         return res.status(500).json({ error: "Internal Server Error"});
-    }
-});
-
-//Retrieving all books
-router.get("/Books-all", async(req,res) => {
-
-    try{
-        const books = await Books.find();
-        return res.json({ success: true, books });
-    }
-    catch(err){
-        console.error("Error retrieving books:", err);
-        return res.status(500).json({ error: "Internal Server Error" });
     }
 });
 
@@ -116,7 +111,7 @@ router.post("/books/:book_id", async(req,res) => {
     const { email, action } = req.body;
 
     try{ 
-        const book = await Books.findOne({ book_id });
+        const book = await Books.findOne({ bookId: book_id });
         if (!book) {
             return res.status(404).json({ message: 'Book not found' });
         }
@@ -127,8 +122,17 @@ router.post("/books/:book_id", async(req,res) => {
         }
 
         if (action === "Issue") {
+            
+            if(book.count <= 1){
+                return res.status(400).json({ message: "Can't Issue, Only 1 left" });
+            }
+
             if (!user.issues.includes(book_id)){
                 user.issues.push(book_id);
+
+                book.count -= 1;
+                console.log(book.count);
+                
                 await user.save();
                 return res.status(200).json({ message: 'Book issued successfully' });
             } 
@@ -137,8 +141,12 @@ router.post("/books/:book_id", async(req,res) => {
             }
         } 
         else if (action === "Return") {
-            if (user.issues.includes(book_id)) {
+
+            if (user.issues.includes(book_id)) 
+            {
                 user.issues = user.issues.filter(id => id != book_id);
+
+                book.count += 1;
                 await user.save();
                 return res.status(200).json({ message: 'Book returned successfully' });
             } 
