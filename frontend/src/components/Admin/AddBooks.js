@@ -19,7 +19,7 @@ export default function AddBooks() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const url = `http://localhost:7000/api/`;
+        const url = `https://book-management-cjgu.onrender.com/api/`;
 
         const response = await fetch(url, {
             method: "POST",
