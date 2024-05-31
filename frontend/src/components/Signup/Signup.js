@@ -58,12 +58,12 @@ const SignUpForm = () => {
     };
 
     return (
-        <div className='complete'>
-            <div className="login-container">
-                <div className="login-card">
+        <div className='complete2'>
+            <div className="signup-container">
+                <div className="signup-card">
                     <div className='d-flex flex-row'>
                         <img src={book_icon} alt="icon" style={{ height: '30px', width: '30px' }} />
-                        <h2 className="login-title ms-3">Library Management System</h2>
+                        <h2 className="signup-title ms-3">Library Management System</h2>
                     </div>
                     <h5 className='mb-4'>Register with your account</h5>
 

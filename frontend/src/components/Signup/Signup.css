@@ -1,4 +1,4 @@
-/* LoginForm.css */
+/* signupForm.css */
 
 body, html {
     margin: 0;
@@ -7,7 +7,7 @@ body, html {
     font-family: Arial, sans-serif;
   }
   
-  .login-container {
+  .signup-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,12 +16,12 @@ body, html {
     height: 100vh;
   }
 
-  .complete{
+  .complete2{
     width: 40vw;
     background-color: #f8f9fa;
   }
   
-  .login-card {
+  .signup-card {
     background-color: #fff;
     padding: 3rem;
     border-radius: 8px;
@@ -35,21 +35,21 @@ body, html {
     margin-bottom: 1rem;
   }
 
-  .login-title{
+  .signup-title{
     font-size: 3.5rem;
     font-weight: 700;
   }
   
-  .login-card h2 {
+  .signup-card h2 {
     margin-bottom: 1rem;
     font-size: 1.5rem;
   }
   
-  .login-card p {
+  .signup-card p {
     margin-bottom: 1.5rem;
   }
   
-  .login-card a {
+  .signup-card a {
     color: #3b82f6;
     text-decoration: none;
   }
@@ -133,3 +133,33 @@ body, html {
     background-color: #2563eb;
   }
   
+  @media (max-width: 576px) {
+
+    .signup-card{
+      width: 100vw;
+      margin-top: 40px;
+   }
+
+   .cards{
+    width: 100vw;
+   }
+
+   .complete2{
+    width: 100vw !important;
+   }
+
+   .signup-container{
+    margin-bottom: 20px;
+    align-items: baseline;
+    width: 90%;
+   }
+
+   .signup-text{
+    font-size: 1rem;
+   }
+
+   .signup-title{
+    font-size: 1.2rem !important;
+    margin-left: 0px;
+   }
+}

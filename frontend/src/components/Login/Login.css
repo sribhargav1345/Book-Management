@@ -28,6 +28,7 @@ body, html {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
     text-align: center;
+    margin-top: 20px;
   }
   
   .logo {
@@ -37,7 +38,8 @@ body, html {
 
   .login-title{
     font-size: 3.5rem;
-    font-weight: 700;
+    font-weight: 700;  
+    margin-left: 25px;
   }
   
   .login-card h2 {
@@ -133,3 +135,33 @@ body, html {
     background-color: #2563eb;
   }
   
+@media (max-width: 576px) {
+
+    .login-card{
+      width: 100vw;
+      margin-top: 40px;
+   }
+
+   .cards{
+    width: 100vw;
+   }
+
+   .complete{
+    width: 100vw !important;
+   }
+
+   .login-container{
+    margin-bottom: 20px;
+    align-items: baseline;
+    width: 90%;
+   }
+
+   .login-text{
+    font-size: 1rem;
+   }
+
+   .login-title{
+    font-size: 1.2rem !important;
+    margin-left: 0px;
+   }
+}

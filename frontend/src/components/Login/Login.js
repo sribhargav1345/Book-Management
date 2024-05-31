@@ -74,10 +74,10 @@ const LoginForm = () => {
                 <div className="login-card">
                     <div className='d-flex flex-row'>
                         <img src={book_icon} alt="icon" style={{ height: '30px', width: '30px'}}/>
-                        <h2 className="login-title ms-3">Library Management System</h2>
+                        <h2 className="login-title">Library Management System</h2>
                     </div>
-                    <h5>Log in to your account</h5>
-                    <p>Don't have an account? <a href="/register">Sign Up</a></p>
+                    <h5 className='login-text'>Log in to your account</h5>
+                    <p className='login-text'>Don't have an account? <a href="/register">Sign Up</a></p>
 
                     <GoogleLoginButton />
 
