@@ -5,6 +5,8 @@ const GoogleLoginButton = () => {
 
   const handleSuccess = (response) => {
     console.log('Login Success:', response);
+    const userEmail = response.profileObj.email;
+    console.log('User Email:', userEmail);
   };
 
   const handleError = () => {
@@ -12,7 +14,7 @@ const GoogleLoginButton = () => {
   };
 
   return (
-    <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID}>
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID} scope="email">
       <GoogleLogin
         onSuccess={handleSuccess}
         onError={handleError}

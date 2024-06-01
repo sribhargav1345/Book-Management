@@ -46,9 +46,10 @@ const SignUpForm = () => {
         }
 
         alert("User Created Successfully");
+        console.log(result);
 
-        Cookies.set('authToken', result.token, { expires: 1, sameSite: 'Lax' });
-        Cookies.setItem('type', 'User', { expires: 1, sameSite: 'Lax' });
+        Cookies.set('authToken', result.authToken, { expires: 1, sameSite: 'Lax' });
+        Cookies.set('type', 'User', { expires: 1, sameSite: 'Lax' });
         
         setEmail('');
         setName('');
