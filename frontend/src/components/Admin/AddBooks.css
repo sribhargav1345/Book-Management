@@ -57,3 +57,17 @@
     display: flex;
     justify-content: center;
 }
+
+@media (max-width: 768px){
+    .books-card{
+        width: 52vw;
+        margin-top: 30px;
+    }
+}
+
+@media (max-width: 468px){
+    .books-card{
+        width: 90vw;
+        margin-top: 30px;
+    }
+}

@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
-
 import Cookies from 'js-cookie';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -11,19 +10,15 @@ import "./Navbar.css"
 export default function CustomNavbar(User) {
 
     const navigate = useNavigate();
-    //console.log(User.User);
 
     const handleLogout = async () => {
-
         Cookies.remove('authToken');
         Cookies.remove('type');
-
         navigate("/login");
     }
 
     const handleAdmin = async () => {
-
-        if(User.User !== "AdminDashboard") navigate("/admin");
+        if (User.User !== "AdminDashboard") navigate("/admin");
         else navigate("/");
     }
 
@@ -43,34 +38,28 @@ export default function CustomNavbar(User) {
                     </span>
                 </div>
             </Navbar.Brand>
-
-            {Cookies.get('type') === "Admin" &&
-                <div className="d-flex ms-auto">
-
-                    {User.User !== "AdminDashboard" && (
-                        <Nav>
-                            <button className='btn logout-button' onClick={handleAdmin}> Admin</button>
-                        </Nav>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="ms-auto flex-column flex-md-row">
+                    {Cookies.get('type') === "Admin" && (
+                        <>
+                            {User.User !== "AdminDashboard" && (
+                                <Nav.Item className="my-1 my-lg-0">
+                                    <button className='btn logout-button' onClick={handleAdmin}>Admin</button>
+                                </Nav.Item>
+                            )}
+                            {User.User === "AdminDashboard" && (
+                                <Nav.Item className="my-1 my-lg-0">
+                                    <button className='btn logout-button' onClick={handleAdmin}>Books</button>
+                                </Nav.Item>
+                            )}
+                        </>
                     )}
-                    {User.User === "AdminDashboard" && (
-                        <Nav>
-                            <button className='btn logout-button' onClick={handleAdmin}> Books</button>
-                        </Nav>
-                    )}
-
-                    <Nav>
-                        <button className='btn logout-button' onClick={handleLogout}> Logout</button>
-                    </Nav>
-                </div>
-            }
-
-            {Cookies.get('type') !== "Admin" &&
-                <Nav className='ms-auto'>
-                    <button className='btn logout-button' onClick={handleLogout}> Logout</button>
+                    <Nav.Item className="my-1 my-lg-0">
+                        <button className='btn logout-button' onClick={handleLogout}>Logout</button>
+                    </Nav.Item>
                 </Nav>
-            }
-
-
+            </Navbar.Collapse>
         </Navbar>
     );
 }

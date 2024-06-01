@@ -1,6 +1,18 @@
-.admin-page{
+.admin-page {
     display: flex;
     justify-content: space-around;
     align-items: center;
     height: 50vh;
+}
+
+/* Media query for small screens */
+@media (max-width: 768px) {
+    .admin-page {
+        flex-direction: column; /* Stack cards vertically */
+        height: auto; 
+    }
+
+    .admin-card {
+        width: 100%; /* Full width for each card */
+    }
 }

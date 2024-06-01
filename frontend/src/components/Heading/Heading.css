@@ -26,3 +26,43 @@
     justify-content: space-around;
     padding: 20px;
 }
+
+@media (max-width: 500px){
+    .imaging{
+        margin-left: 10px;
+    }
+
+    .heads2{
+        font-size: 1.8rem;
+        font-weight: 500;
+    }
+
+    .heads{
+        font-size: 1.8rem;
+        font-weight: 500;
+    }
+
+    .no-dis{
+        display: none;
+    }
+}
+
+@media (max-width: 411px){
+    .imaging{
+        margin-left: 10px;
+    }
+
+    .heads2{
+        font-size: 1.5rem;
+        font-weight: 500;
+    }
+
+    .heads{
+        font-size: 1.5rem;
+        font-weight: 500;
+    }
+
+    .no-dis{
+        display: none;
+    }
+}
