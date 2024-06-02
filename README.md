@@ -2,7 +2,7 @@
 
 **Live Link:** https://book-management-mauve.vercel.app/
 
-**About this project:**
+<h2>About this Project:</h2>
 
 * I have used Tech Stack of ReactJS, Bootstrap for frontend and MongoDB, Nodejs, Expressjs for Backend for making this website
    
@@ -23,6 +23,8 @@
 
 * For Admin, I have given the following features
     - Addition of Books
+        * Admins can add a single book at a time, or can add multiple book by uploading a csv file. [ I have used multer to tackle it ]
+          
     - Editing the details of Books, once added
     - Deleting the book, if it is out of stock
     - Issual of Books	(Books issue by users)
