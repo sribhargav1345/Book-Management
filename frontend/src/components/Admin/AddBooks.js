@@ -4,6 +4,7 @@ import "./AddBooks.css";
 export default function AddBooks() {
 
     const [showPopup, setShowPopup] = useState(false);
+    const [showPopup2, setShowPopup2] = useState(false);
 
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
@@ -11,12 +12,21 @@ export default function AddBooks() {
     const [year, setYear] = useState(null);
     const [count, setCount] = useState(1);
     const [bookId, setBookId] = useState(null);
+    const [file, setFile] = useState(null);
 
     const togglePopup = () => {
         setShowPopup(!showPopup);
     };
 
-    const handleSubmit = async (event) => {
+    const handleFileChange = (e) => {
+        setFile(e.target.files[0]);
+    };
+
+    const UploadPopUp = () => {
+        setShowPopup2(!showPopup2);
+    };
+
+    const handleSubmit_Single = async (event) => {
         event.preventDefault();
 
         const url = `https://book-management-cjgu.onrender.com/api/`;
@@ -48,6 +58,42 @@ export default function AddBooks() {
         setShowPopup(false);
     };
 
+    const handleSubmit_Multiple = async (event) => {
+        event.preventDefault();
+
+        if(!file){
+            alert("Please upload a CSV File");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const url = `https://book-management-cjgu.onrender.com/api/`;
+
+        try{
+            const response = await fetch(url, {
+                method: "POST",
+                body: formData
+            });
+    
+            const result = await response.json();
+    
+            if (!response.ok) {
+                console.log(result.message || "Warning! Books Not Added");
+                setShowPopup2(false);
+                return;
+            }
+    
+            alert("Book Added Successfully");
+            setShowPopup2(false);
+        }
+        catch(error){
+            console.log("Error handling Multiple Files");
+            alert("Error handling Multiple Files");
+        }
+    };
+
     return (
         <div className='add-books'>
             <div className="books-container">
@@ -65,6 +111,11 @@ export default function AddBooks() {
                                 <button className='btn btn-primary btn-md buttoning' onClick={togglePopup}>Add Book</button>
                             </div>
 
+                            <div className='multi-book'>
+                                <p className='me-4 mt-3'>Multiple Books:</p>
+                                <button className='btn btn-primary btn-md buttoning' onClick={UploadPopUp}>Add Books(.csv)</button>
+                            </div>
+
                         </div>
 
                     </div>
@@ -75,7 +126,7 @@ export default function AddBooks() {
                     <div className='popup-inner'>
                         <h2 className='align-center pop-title'>Add a Book</h2>
 
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={handleSubmit_Single}>
                             <label>
                                 Title:
                                 <input type='text' name='title' className='form-control' required value={title} onChange={(e) => setTitle(e.target.value)} />
@@ -108,6 +159,21 @@ export default function AddBooks() {
                             <button type='button' className='btn btn-secondary' onClick={togglePopup}>Close</button>
                         </form>
 
+                    </div>
+                </div>
+            )}
+            {showPopup2 && (
+                <div className='popup'>
+                    <div className='popup-inner'>
+                        <h2 className='align-center pop-title2 mb-5'>Add Books via CSV file</h2>
+                        <form onSubmit={handleSubmit_Multiple}>
+                            <label className='pop-csv'>
+                                <p style={{fontWeight: '600'}}> Upload CSV: </p>
+                                <input type='file' accept='.csv' className='form-control' required onChange={handleFileChange} />
+                            </label>
+                            <button type='submit' className='btn btn-primary'>Submit</button>
+                            <button type='button' className='btn btn-secondary' onClick={UploadPopUp}>Close</button>
+                        </form>
                     </div>
                 </div>
             )}
