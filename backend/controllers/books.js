@@ -4,7 +4,14 @@ const router = express.Router();
 const Books = require("../models/books");
 const Users = require("../models/Users");
 
-// Posting a new book
+const multer = require('multer');
+const csv = require('csv-parser');
+const fs = require('fs');
+const { File } = require("buffer");
+
+const upload = multer({ dest: 'uploads/'});
+
+// Posting a new single book
 router.post("/", async(req,res) => {
 
     try{
@@ -38,6 +45,73 @@ router.post("/", async(req,res) => {
         return res.status(500).json({ error: "Internal Server Error"});
     }
 });
+
+// Posting of multiple books
+router.post("/upload",upload.single('file'), async(req,res) => {
+    
+    if(!req.file){
+        return res.status(400).json({ error: "File Not uploaded "});
+    }
+
+    try{
+        const books = []
+        const file = req.file.path;
+
+        fs.createReadStream(file)
+        .pipe(csv())
+        .on('data', (row) => {
+
+            // Cleaning the row, so that spaces won't affect our solution
+            const cleanedRow = {};
+            for (let key in row) {
+                const trimmedKey = key.trim();
+                cleanedRow[trimmedKey] = row[key];
+            }
+
+            books.push(cleanedRow);
+        })
+        .on('end', async() => {
+            try{
+                const errors = [];
+                for(const book of books){
+                    
+                    const book_present = await Books.findOne({ title: book.title, author: book.author });
+
+                    if(book_present){
+                        errors.push(`Book with the Title ${book.title} and Author ${book.author} is aldready present`);
+                        continue;
+                    }
+
+                    const book_id = await Books.findOne({ bookId: book.bookId });
+
+                    if(book_id){
+                        errors.push(`Book with the ID ${book_id} is aldready present`);
+                        continue;
+                    }
+
+                    const newBook =  new Books({
+                        bookId: book.bookId,
+                        title: book.title,
+                        author: book.author,
+                        genre: book.genre,
+                        year: book.year,
+                        count: book.count
+                    });
+            
+                    await newBook.save();
+                }
+                res.status(200).json({ message: `Successfull: ${books.length-errors.length} Books, Failed: ${errors.length} Books`})
+            }   
+            catch(error){
+                res.status(500).json({ message: "File Received, Internal Server Error"});
+            }
+        })
+    }
+    catch(error){
+        res.status(500).json({ message: "Internal Server Error"});
+    }
+});
+
 
 // Retrieving books based on query parameters
 router.get('/books', async (req, res) => {

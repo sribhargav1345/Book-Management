@@ -66,10 +66,12 @@ export default function AddBooks() {
             return;
         }
 
+        console.log("Came here");
+
         const formData = new FormData();
         formData.append('file', file);
 
-        const url = `https://book-management-cjgu.onrender.com/api/`;
+        const url = `https://book-management-cjgu.onrender.com/api/upload/`;
 
         try{
             const response = await fetch(url, {
@@ -78,6 +80,7 @@ export default function AddBooks() {
             });
     
             const result = await response.json();
+            console.log("Cheppan");
     
             if (!response.ok) {
                 console.log(result.message || "Warning! Books Not Added");
@@ -85,7 +88,7 @@ export default function AddBooks() {
                 return;
             }
     
-            alert("Book Added Successfully");
+            alert(result.message || "Books Added Successfully");
             setShowPopup2(false);
         }
         catch(error){
