@@ -17,7 +17,11 @@ export default function Books() {
     const [loading, setLoading] = useState(true);
 
     const [TitleValue, setTitleValue] = useState('');                               // Searching by title
-    const [filterOption, setFilterOption] = useState('author');                     // Options: Author, genre, year
+
+    const userType = Cookies.get('type');
+    const state = userType === 'Admin' ? 'bookId' : 'author';
+
+    const [filterOption, setFilterOption] = useState(state);                     // Options: Author, genre, year
     const [filterValue, setFilterValue] = useState('');                             // Filter by option value
 
     const [editingBookId, setEditingBookId] = useState(null);
@@ -70,9 +74,9 @@ export default function Books() {
         loadBooks();
     };
 
-    const handleRemove = async (bookId) => {
+    const handleRemove = async (bookid) => {
         try {
-            const response = await fetch(`https://book-management-cjgu.onrender.com/api/books/${bookId}`, {
+            const response = await fetch(`https://book-management-cjgu.onrender.com/api/books/${bookid}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -81,7 +85,7 @@ export default function Books() {
 
             const result = await response.json();
             if (result.success) {
-                setBooks(books.filter(book => book._id !== bookId));
+                setBooks(books.filter(book => book._id !== bookid));
             }
             else {
                 console.error("Failed to delete book:", result.error);
@@ -92,10 +96,10 @@ export default function Books() {
         }
     };
 
-    const handleSaveClick = async (bookId) => {
+    const handleSaveClick = async (bookid) => {
 
         try {
-            const response = await fetch(`https://book-management-cjgu.onrender.com/api/books/${bookId}`, {
+            const response = await fetch(`https://book-management-cjgu.onrender.com/api/books/${bookid}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -106,7 +110,7 @@ export default function Books() {
             const result = await response.json();
 
             if (result.success) {
-                setBooks(books.map(book => book._id === bookId ? result.book : book));
+                setBooks(books.map(book => book._id === bookid ? result.book : book));
                 setEditingBookId(null);
             }
             else {
@@ -146,7 +150,7 @@ export default function Books() {
         );
     }
 
-    if(!Cookies.get('authToken')){
+    if (!Cookies.get('authToken')) {
         navigate('/login');
         return;
     }
@@ -169,12 +173,21 @@ export default function Books() {
                     <table className='tables'>
                         <thead>
                             <tr>
-                                <th>S.No</th>
+                                {userType === 'Admin' && (
+                                    <>
+                                        <th>Book-ID</th>
+                                    </>
+                                )}
+                                {userType !== 'Admin' && (
+                                    <>
+                                        <th>S.No</th>
+                                    </>
+                                )}
                                 <th>Name</th>
                                 <th>Author</th>
                                 <th>Genre</th>
                                 <th>Year Published</th>
-                                {Cookies.get('type') === 'Admin' && (
+                                {userType === 'Admin' && (
                                     <>
                                         <th>Count</th>
                                         <th>Edit</th>
@@ -186,11 +199,11 @@ export default function Books() {
                         <tbody>
                             {currentBooks.map((item, index) => (
                                 <tr key={item._id || index}>
-                                    <td>{first + index + 1}</td>
-                                    {Cookies.get('type') === 'Admin' && (
+                                    {userType === 'Admin' && (
                                         <>
                                             {editingBookId === item._id ? (
                                                 <>
+                                                    <td>{item.bookId}</td>
                                                     <td><input type="text" name="title" value={editedBook.title} onChange={handleChange} /></td>
                                                     <td><input type="text" name="author" value={editedBook.author} onChange={handleChange} /></td>
                                                     <td><input type="text" name="genre" value={editedBook.genre} onChange={handleChange} /></td>
@@ -201,6 +214,7 @@ export default function Books() {
                                                 </>
                                             ) : (
                                                 <>
+                                                    <td>{item.bookId}</td>
                                                     <td>{item.title}</td>
                                                     <td>{item.author}</td>
                                                     <td>{item.genre}</td>
@@ -212,8 +226,9 @@ export default function Books() {
                                             )}
                                         </>
                                     )}
-                                    {Cookies.get('type') !== 'Admin' && (
+                                    {userType !== 'Admin' && (
                                         <>
+                                            <td>{first + index + 1}</td>
                                             <td>{item.title}</td>
                                             <td>{item.author}</td>
                                             <td>{item.genre}</td>

@@ -1,51 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
+import Cookies from 'js-cookie';
 import './Search.css';
 
 export default function Search({ TitleValue, setTitleValue, filterOption, setFilterOption, filterValue, setFilterValue, handleSearch }) {
 
-    const [showPopup, setShowPopup] = useState(false);
-
-    const [title, setTitle] = useState('');
-    const [author, setAuthor] = useState('');
-    const [genre, setGenre] = useState('');
-    const [year, setYear] = useState(null);
-
-    const togglePopup = () => {
-        setShowPopup(!showPopup);
-    };
-
     const handleFilterChange = (e) => {
         setFilterOption(e.target.value);
-    };
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-        const url = `https://book-management-cjgu.onrender.com/api/books`;
-
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ title, author, genre, year })
-        });
-
-        const result = await response.json();
-
-        setTitle("");
-        setAuthor("");
-        setGenre("");
-        setYear(null);
-
-        if (!response.ok) {
-            console.log(result.message || "Warning! Book Not Added");
-            setShowPopup(false);
-            return;
-        }
-
-        alert("Book Added Successfully");
-        setShowPopup(false);
     };
 
     return (
@@ -73,6 +33,9 @@ export default function Search({ TitleValue, setTitleValue, filterOption, setFil
                         value={filterOption}
                         onChange={handleFilterChange}
                     >
+                        {Cookies.get('type')=== 'Admin' && (
+                            <option value="bookId">BookId</option>
+                        )}
                         <option value="author">Author</option>
                         <option value="genre">Genre</option>
                         <option value="year">Year</option>
@@ -83,7 +46,7 @@ export default function Search({ TitleValue, setTitleValue, filterOption, setFil
                     <input
                         type="text"
                         className='form-control'
-                        placeholder={`e.g. ${filterOption === 'author' ? 'William Shakespeare' : filterOption === 'genre' ? 'Science Fiction' : filterOption === 'year' ? '1956' : ''}`}
+                        placeholder={`e.g. ${filterOption === 'bookId' ? '1001': filterOption === 'author' ? 'William Shakespeare' : filterOption === 'genre' ? 'Science Fiction' : filterOption === 'year' ? '1956' : ''}`}
                         value={filterValue}
                         onChange={(e) => setFilterValue(e.target.value)}
                     />
@@ -94,35 +57,6 @@ export default function Search({ TitleValue, setTitleValue, filterOption, setFil
                 </div>
 
             </div>
-            {showPopup && (
-                <div className='popup'>
-                    <div className='popup-inner'>
-                        <h2 className='align-center'>Add a Book</h2>
-
-                        <form onSubmit={handleSubmit}>
-                            <label>
-                                Title:
-                                <input type='text' name='title' className='form-control' required value={title} onChange={(e) => setTitle(e.target.value)} />
-                            </label>
-                            <label>
-                                Author:
-                                <input type='text' name='author' className='form-control' required value={author} onChange={(e) => setAuthor(e.target.value)} />
-                            </label>
-                            <label>
-                                Genre:
-                                <input type='text' name='genre' className='form-control' required value={genre} onChange={(e) => setGenre(e.target.value)} />
-                            </label>
-                            <label>
-                                Year:
-                                <input type='number' name='year' className='form-control' required value={year} onChange={(e) => setYear(e.target.value)} />
-                            </label>
-                            <button type='submit' className='btn btn-primary'>Submit</button>
-                            <button type='button' className='btn btn-secondary' onClick={togglePopup}>Close</button>
-                        </form>
-                        
-                    </div>
-                </div>
-            )}
         </div>
     );
 }

@@ -117,9 +117,10 @@ router.post("/upload",upload.single('file'), async(req,res) => {
 router.get('/books', async (req, res) => {
 
     try {
-        const { title, author, genre, year } = req.query;
+        const { bookId, title, author, genre, year } = req.query;
         let filter = {};
 
+        if (bookId) filter.bookId = Number(bookId);
         if (title) filter.title = { $regex: title, $options: 'i' };
         if (author) filter.author = { $regex: author, $options: 'i' };
         if (genre) filter.genre = { $regex: genre, $options: 'i' };
