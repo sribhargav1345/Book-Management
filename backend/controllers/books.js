@@ -6,6 +6,7 @@ const Users = require("../models/Users");
 
 const multer = require('multer');
 const csv = require('csv-parser');
+
 const fs = require('fs');
 const { File } = require("buffer");
 
@@ -178,66 +179,5 @@ router.delete("/Books/:book_id", async(req,res) => {
         return res.status(500).json({ err: "Internal Server error, not deleted"});
     }
 });
-
-// Issuing,Returning Books related
-router.post("/books/:book_id", async(req,res) => {
-
-    const { book_id } = req.params;
-    const { email, action } = req.body;
-
-    try{ 
-        const book = await Books.findOne({ bookId: book_id });
-        if (!book) {
-            return res.status(404).json({ message: 'Book not found' });
-        }
-
-        const user = await Users.findOne({ email });
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        if (action === "Issue") {
-            
-            if(book.count <= 1){
-                return res.status(400).json({ message: "Can't Issue, Only 1 left" });
-            }
-
-            if (!user.issues.includes(book_id)){
-                user.issues.push(book_id);
-
-                book.count -= 1;
-                console.log(book.count);
-                
-                await user.save();
-                return res.status(200).json({ message: 'Book issued successfully' });
-            } 
-            else {
-                return res.status(400).json({ message: 'Book already issued to the user' });
-            }
-        } 
-        else if (action === "Return") {
-
-            if (user.issues.includes(book_id)) 
-            {
-                user.issues = user.issues.filter(id => id != book_id);
-
-                book.count += 1;
-                await user.save();
-                return res.status(200).json({ message: 'Book returned successfully' });
-            } 
-            else {
-                return res.status(400).json({ message: 'Book not issued to the user' });
-            }
-        } 
-        else {
-            return res.status(400).json({ message: 'Invalid action' });
-        }
-    }
-    catch(error){
-        console.error(error);
-        res.status(500).json({ message: 'Internal Server Error' });
-    }
-
-})
 
 module.exports = router;

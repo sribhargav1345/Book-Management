@@ -29,7 +29,7 @@
     margin-bottom: 0;
 }
 
-.buttoning {
+.buttoninging {
     margin-right: 200px;
 }
 
@@ -57,7 +57,7 @@
     box-shadow: 0 0 8px rgba(128, 189, 255, 0.6);
 }
 
-.buttoning3 {
+.buttoninging {
     width: 50%;
     padding: 10px;
     border-radius: 5px;
@@ -68,7 +68,7 @@
     transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-.buttoning3:hover {
+.buttoninging:hover {
     background-color: #0056b3;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }

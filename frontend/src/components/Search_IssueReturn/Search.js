@@ -1,9 +1,8 @@
 import React from 'react';
-import Cookies from 'js-cookie';
 import './Search.css';
 
-export default function Search({ TitleValue, setTitleValue, filterOption, setFilterOption, filterValue, setFilterValue, handleSearch }) {
-
+export default function Search({ name, setName, filterOption, setFilterOption, filterValue, setFilterValue, handleSearch }) {
+    
     const handleFilterChange = (e) => {
         setFilterOption(e.target.value);
     };
@@ -11,7 +10,6 @@ export default function Search({ TitleValue, setTitleValue, filterOption, setFil
     return (
         <div className='search-space'>
             <div className='row items'>
-
                 <div className='col-md-6 search-name d-flex flex-row'>
                     <div>
                         <p>Search</p>
@@ -19,8 +17,8 @@ export default function Search({ TitleValue, setTitleValue, filterOption, setFil
                             type='text'
                             className='form-control'
                             placeholder='Search by Title'
-                            value={TitleValue}
-                            onChange={(e) => setTitleValue(e.target.value)}
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
                         />
                     </div>
                     <div className='vertical-line'></div>
@@ -33,12 +31,8 @@ export default function Search({ TitleValue, setTitleValue, filterOption, setFil
                         value={filterOption}
                         onChange={handleFilterChange}
                     >
-                        {Cookies.get('type')=== 'Admin' && (
-                            <option value="bookId">BookId</option>
-                        )}
-                        <option value="author">Author</option>
-                        <option value="genre">Genre</option>
-                        <option value="year">Year</option>
+                        <option value="email">Email</option>
+                        <option value="bookId">BookId</option>
                     </select>
                 </div>
 
@@ -46,16 +40,15 @@ export default function Search({ TitleValue, setTitleValue, filterOption, setFil
                     <input
                         type="text"
                         className='form-control'
-                        placeholder={`e.g. ${filterOption === 'bookId' ? '1001': filterOption === 'author' ? 'William Shakespeare' : filterOption === 'genre' ? 'Science Fiction' : filterOption === 'year' ? '1956' : ''}`}
+                        placeholder={`e.g. ${filterOption === 'email' ? 'library@gmail.com' : filterOption === 'bookId' ? '1001' : ''}`}
                         value={filterValue}
                         onChange={(e) => setFilterValue(e.target.value)}
                     />
                 </div>
 
                 <div className='col-md-3 apply-button d-flex flex-row'>
-                    <button className='btn btn-primary btn-md buttoning3 px-5' onClick={handleSearch}>Apply</button>
+                    <button className='btn btn-primary btn-md buttoninging px-5' onClick={handleSearch}>Apply</button>
                 </div>
-
             </div>
         </div>
     );

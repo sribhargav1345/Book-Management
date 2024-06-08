@@ -15,6 +15,7 @@ mongoDB();
 
 app.use('/api', require("./controllers/books"));
 app.use('/api', require("./controllers/auth"));
+app.use('/api', require("./controllers/IssueReturn"));
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}.`);

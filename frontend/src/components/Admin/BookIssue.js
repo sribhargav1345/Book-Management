@@ -11,7 +11,7 @@ export default function BookIssue() {
     const handleSubmit = async(e) => {
         e.preventDefault();
 
-        const url = `https://book-management-cjgu.onrender.com/api/books/${bookId}`;
+        const url = `http://localhost:7000/api/books/${bookId}`;
 
         let response = await fetch(url, {
             method: "POST",
