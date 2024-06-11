@@ -8,8 +8,7 @@ import Search from "../../components/Search_IssueReturn/Search";
 
 import "./Returns.css";
 
-export default function Issues() {
-
+export default function Returns() {
     const [details, setDetails] = useState([]); 
     const [loading, setLoading] = useState(true); 
 
@@ -30,13 +29,17 @@ export default function Issues() {
     const paginate = pageNumber => setCurr(pageNumber);
 
     useEffect(() => {
-        if (!Cookies.get('authToken') || Cookies.get('type') !== "Admin") {
+        if (!Cookies.get('authToken')) {
             navigate('/login');
+        }
+
+        if (Cookies.get('type') !== "Admin") {
+            navigate('/');
         }
     }, [navigate]);
 
     const loadDetails = useCallback(async () => {
-        
+        setLoading(true);
         try {
             let query = '';
 
@@ -48,7 +51,7 @@ export default function Issues() {
                 query += `${query ? '&' : '?'}${filterOption}=${filterValue}`;
             }
 
-            const response = await fetch(`http://localhost:7000/api/returns${query}`, {
+            const response = await fetch(`https://book-management-cjgu.onrender.com/api/returns${query}`, {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json'
@@ -57,12 +60,10 @@ export default function Issues() {
 
             const data = await response.json();
 
-            setDetails(data.issues || []); 
-            setLoading(false);
-
-        } 
-        catch (error) {
+            setDetails(data.returns || []); 
+        } catch (error) {
             console.error("Error fetching Data", error);
+        } finally {
             setLoading(false);
         }
     }, [name, filterOption, filterValue]);
@@ -97,8 +98,8 @@ export default function Issues() {
                 setFilterValue={setFilterValue}
                 handleSearch={handleSearch}
             />
-            <div className='m-5'>
-                <p> Note: It only consists of previous 30-days record </p>
+            <div className="note">
+                <p style={{color: '#2d3d6a', fontWeight: 'bold'}}> <span style={{color: "#784DC6", fontWeight: 'bold'}}> Note: </span> It only consists of previous 30-days record </p>
             </div>
             <div className='table-prop container mt-5'>
                 <div className='tabling'>

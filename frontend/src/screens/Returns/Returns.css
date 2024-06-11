@@ -21,6 +21,11 @@
     height: 90vh;
 }
 
+.note{
+    margin-top: 40px;
+    margin-left: 120px;
+}
+
 .tables th, .tables td {
     border: 1px solid #ddd;
     padding: 8px;
@@ -76,6 +81,11 @@
 
     .tables-container {
         padding: 0 5px;
+    }
+
+    .note{
+        margin-top: 40px;
+        margin-left: 20px;
     }
 }
 

@@ -80,6 +80,10 @@ label {
     background-color: #2563eb;
 }
 
+.btn-issue{
+    margin-left: 20px;
+}
+
 @media (max-width: 768px){
     .issue-card{
         width: 80vw;

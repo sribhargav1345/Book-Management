@@ -9,7 +9,6 @@ import Search from "../../components/Search_IssueReturn/Search";
 import "./Issues.css";
 
 export default function Issues() {
-
     const [details, setDetails] = useState([]); 
     const [loading, setLoading] = useState(true); 
 
@@ -30,13 +29,17 @@ export default function Issues() {
     const paginate = pageNumber => setCurr(pageNumber);
 
     useEffect(() => {
-        if (!Cookies.get('authToken') || Cookies.get('type') !== "Admin") {
+        if (!Cookies.get('authToken')) {
             navigate('/login');
+        }
+
+        if (Cookies.get('type') !== "Admin") {
+            navigate('/');
         }
     }, [navigate]);
 
     const loadDetails = useCallback(async () => {
-        
+        setLoading(true);
         try {
             let query = '';
 
@@ -48,7 +51,7 @@ export default function Issues() {
                 query += `${query ? '&' : '?'}${filterOption}=${filterValue}`;
             }
 
-            const response = await fetch(`http://localhost:7000/api/issues${query}`, {
+            const response = await fetch(`https://book-management-cjgu.onrender.com/api/issues${query}`, {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json'
@@ -56,13 +59,10 @@ export default function Issues() {
             });
 
             const data = await response.json();
-
             setDetails(data.issues || []); 
-            setLoading(false);
-
-        } 
-        catch (error) {
+        } catch (error) {
             console.error("Error fetching Data", error);
+        } finally {
             setLoading(false);
         }
     }, [name, filterOption, filterValue]);

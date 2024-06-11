@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import "./BookIssue.css";
+import { useNavigate } from "react-router-dom";
 
 export default function BookIssue() {
 
@@ -8,10 +9,21 @@ export default function BookIssue() {
 
     const action = "Return";
 
+    let navigate = useNavigate();
+
+    const handleReturnList = () => {
+        navigate("/returns");
+    }
+
     const handleSubmit = async(e) => {
         e.preventDefault();
 
-        const url = `http://localhost:7000/api/books/${bookId}`;
+        if(email === '' || bookId === ''){
+            alert("Details not Added");
+            return;
+        }
+
+        const url = `https://book-management-cjgu.onrender.com/api/books/${bookId}`;
 
         let response = await fetch(url, {
             method: "POST",
@@ -66,7 +78,10 @@ export default function BookIssue() {
                                 />
                             </div>
 
-                            <button type="submit" className="submit-btn">Submit</button>
+                            <div className='d-flex'>
+                                <button type="submit" className="submit-btn">Submit</button>
+                                <button className="submit-btn btn-issue" onClick={handleReturnList}>Returns</button>
+                            </div>
                         </form>
 
                     </div>
