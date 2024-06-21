@@ -15,7 +15,7 @@ const { File } = require("buffer");
 const upload = multer({ dest: 'uploads/'});
 
 // Posting a new single book
-router.post("/", authMiddleware, async(req,res) => {
+router.post("/", async(req,res) => {
 
     try{
         const book_present = await Books.findOne({ title: req.body.title, author: req.body.author });
@@ -50,7 +50,7 @@ router.post("/", authMiddleware, async(req,res) => {
 });
 
 // Posting of multiple books
-router.post("/upload",authMiddleware, upload.single('file'), async(req,res) => {
+router.post("/upload", upload.single('file'), async(req,res) => {
     
     if(!req.file){
         return res.status(400).json({ error: "File Not uploaded "});
@@ -117,7 +117,7 @@ router.post("/upload",authMiddleware, upload.single('file'), async(req,res) => {
 
 
 // Retrieving books based on query parameters
-router.get('/books',authMiddleware, async (req, res) => {
+router.get('/books', async (req, res) => {
 
     try {
         const { bookId, title, author, genre, year } = req.query;
@@ -139,7 +139,7 @@ router.get('/books',authMiddleware, async (req, res) => {
 });
 
 // Updating a book
-router.put("/Books/:book_id",authMiddleware, async(req,res) => {
+router.put("/Books/:book_id", async(req,res) => {
 
     const { book_id } = req.params;
 
@@ -161,7 +161,7 @@ router.put("/Books/:book_id",authMiddleware, async(req,res) => {
 });
 
 // Deleting the book
-router.delete("/Books/:book_id",authMiddleware, async(req,res) => {
+router.delete("/Books/:book_id", async(req,res) => {
 
     const {book_id} = req.params;
 

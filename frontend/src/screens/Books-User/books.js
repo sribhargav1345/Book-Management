@@ -45,7 +45,7 @@ export default function Books() {
                 query += `${query ? '&' : '?'}${filterOption}=${filterValue}`;
             }
 
-            const response = await fetch(`http://localhost:7000/api/books${query}`, {
+            const response = await fetch(`https://book-management-cjgu.onrender.com/api/books${query}`, {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json'
@@ -76,7 +76,7 @@ export default function Books() {
 
     const handleRemove = async (bookid) => {
         try {
-            const response = await fetch(`http://localhost:7000/api/books/${bookid}`, {
+            const response = await fetch(`https://book-management-cjgu.onrender.com/api/books/${bookid}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -99,7 +99,7 @@ export default function Books() {
     const handleSaveClick = async (bookid) => {
 
         try {
-            const response = await fetch(`http://localhost:7000/api/books/${bookid}`, {
+            const response = await fetch(`https://book-management-cjgu.onrender.com/api/books/${bookid}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'

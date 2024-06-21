@@ -29,7 +29,7 @@ export default function AddBooks() {
     const handleSubmit_Single = async (event) => {
         event.preventDefault();
 
-        const url = `http://localhost:7000/api/`;
+        const url = `https://book-management-cjgu.onrender.com/api/`;
 
         const response = await fetch(url, {
             method: "POST",
@@ -71,7 +71,7 @@ export default function AddBooks() {
         const formData = new FormData();
         formData.append('file', file);
 
-        const url = `http://localhost:7000/api/upload/`;
+        const url = `https://book-management-cjgu.onrender.com/api/upload/`;
 
         try{
             const response = await fetch(url, {
