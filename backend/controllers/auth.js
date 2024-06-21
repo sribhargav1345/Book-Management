@@ -6,8 +6,6 @@ const bcrypt = require('bcrypt');
 
 const User = require('../models/Users');
 
-const authenticate = require("../middlewares/authRoutes");
-
 const generateToken = (user) => {
     return jwt.sign({ id: user._id, name: user.name, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
 };
@@ -22,7 +20,6 @@ router.post('/register', async (req, res) => {
         const email_dup = await User.findOne({email});
 
         if(email_dup){
-            console.log("Not-email");
             return res.status(400).json({message: "Email aldready Registered"});
         }
 
@@ -43,7 +40,6 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
     try {
-
         const user = await User.findOne({ email });
 
         if (!user) {

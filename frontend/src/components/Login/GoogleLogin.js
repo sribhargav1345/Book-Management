@@ -1,12 +1,15 @@
 import React from 'react';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from 'jwt-decode';
 
 const GoogleLoginButton = () => {
 
   const handleSuccess = (response) => {
     console.log('Login Success:', response);
-    const userEmail = response.profileObj.email;
-    console.log('User Email:', userEmail);
+    if (response.credential) {
+      const decoded = jwtDecode(response.credential);
+      console.log('User Email:', decoded.email);
+    }
   };
 
   const handleError = () => {
@@ -14,7 +17,7 @@ const GoogleLoginButton = () => {
   };
 
   return (
-    <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID} scope="email">
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID}>
       <GoogleLogin
         onSuccess={handleSuccess}
         onError={handleError}

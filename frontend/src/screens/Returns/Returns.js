@@ -51,7 +51,7 @@ export default function Returns() {
                 query += `${query ? '&' : '?'}${filterOption}=${filterValue}`;
             }
 
-            const response = await fetch(`https://book-management-cjgu.onrender.com/api/returns${query}`, {
+            const response = await fetch(`http://localhost:7000/api/returns${query}`, {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json'

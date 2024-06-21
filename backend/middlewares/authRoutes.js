@@ -8,13 +8,10 @@ const authMiddleware = async (req, res, next) => {
     const token = req.header('Authorization');
 
     if (!token) {
-        console.log("Came here")
         return res.status(401).json({ error: 'Authorization denied' });
     }
 
     try {
-
-        console.log("Came and tried")
         const decoded = jwt.verify(token, jwtSecret);
         req.user = await User.findOne({ email: decoded.user.email });   
 
